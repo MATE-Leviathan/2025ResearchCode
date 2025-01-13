@@ -42,33 +42,50 @@ async def receive_controls(websocket):
 # Stream video frames
 async def send_video(websocket):
     cap = cv2.VideoCapture(0)  # Use the robot's camera 0
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            print("no camera :(")
-            break
-        _, buffer = cv2.imencode('.jpg', frame)  # Encode the frame as JPEG
-        frame_data = base64.b64encode(buffer).decode('utf-8')  # Convert to Base64
-        await websocket.send(json.dumps({"frame": frame_data}))
-        await asyncio.sleep(0.016)  # some fps
+    try:
+        while cap.isOpened():
+            ret, frame = cap.read()
+            if not ret:
+                print("no camera :(")
+                break
+            _, buffer = cv2.imencode('.jpg', frame)  # Encode the frame as JPEG
+            frame_data = base64.b64encode(buffer).decode('utf-8')  # Convert to Base64
+            try:
+                await websocket.send(json.dumps({"frame": frame_data}))
+            except websockets.ConnectionClosed:
+                print("WebSocket closed during video streaming.")
+                break
+            await asyncio.sleep(0.016)  # ~60 fps
+    finally:
+        cap.release()
 
 # Send sensor data and robot status
 async def send_data(websocket):
-    while True:
-        data = get_sensor_data()
-        data.update(get_status())
-        
-        await websocket.send(json.dumps(data))
-        await asyncio.sleep(0.1)  # Update every 100ms        
+    try:
+        while True:
+            data = get_sensor_data()
+            data.update(get_status())
+            
+            try:
+                await websocket.send(json.dumps(data))
+            except websockets.ConnectionClosed:
+                print("WebSocket closed during data streaming.")
+                break
+            await asyncio.sleep(0.1)  # Update every 100ms
+    except Exception as e:
+        print(f"Error in send_data: {e}")
 
 # Handle incoming requests
 async def server_handler(websocket): # can take a path argument, but we don't need
-    # Run tasks
-    await asyncio.gather(
-        send_data(websocket), 
-        send_video(websocket),
-        receive_controls(websocket),
-        )
+    try:
+        # Run tasks
+        await asyncio.gather(
+            send_data(websocket), 
+            send_video(websocket),
+            receive_controls(websocket),
+            )
+    except Exception as e:
+        print(f"Server handler error: {e}")
 
 async def main():
     # Start WebSocket Server

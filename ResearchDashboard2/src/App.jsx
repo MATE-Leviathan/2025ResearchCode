@@ -3,9 +3,9 @@ import './App.css'
 //import Chart from 'react-apexcharts';
 
 function App() {
-  //const ip = "ws://10.50.2.100:8765/"; //ip of jetson wifi
+  const ip = "ws://10.50.2.100:8765/"; //ip of jetson wifi
   //const ip = "ws://10.42.0.1:8765/"; //ip of jetson ethernet
-  const ip = "ws://localhost:8765"; //local computer ip
+  //const ip = "ws://localhost:8765"; //local computer ip
 
   const [webSocket, setWebSocket] = useState(null);
   const [sensorData, setSensorData] = useState({});
