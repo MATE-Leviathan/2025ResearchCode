@@ -32,7 +32,7 @@ async def receive_controls(websocket):
             sys.stdout.flush()
 
             # Control ROV using recieved controls
-            control_rov(robot_controls)
+            #control_rov(robot_controls)
             
             await asyncio.sleep(0.1) # Update every 100ms  
             
