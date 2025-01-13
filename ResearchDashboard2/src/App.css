@@ -1,0 +1,364 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+*{
+    background-color: #222222;
+    color: #dedede;
+}
+.status{
+    display: flex;
+}
+.cardGrid{
+    margin-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.card{
+    border: lightgreen 2px solid;
+    border-radius: 5px;
+    height: 20vh;
+    margin:auto;
+    margin-bottom: 3vh;
+    display: flex;
+    flex-wrap: wrap;
+}
+.cardTitle{
+    text-align: center;
+    width: 100%;
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    margin-top: 25px;
+}
+.cardImage{
+    height:30vh;
+    width: auto;
+    border-radius: 5px;
+    margin:auto;
+    margin-bottom: 20px;
+}
+.camError{
+    color: red;
+    margin:auto;
+    margin-top: 0px;
+    margin-bottom: 100px;
+    padding-top: 0px;
+    font-family: "Lato", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+
+.lights {
+    -webkit-appearance: none;
+    width: 30vw;
+    height: 25px;
+    background: #d3d3d3;
+    border-radius: 5px;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    rotate: -90deg;
+    margin-left: 20vw;
+    margin-top: -90px;
+}
+.lights:hover {
+    opacity: 1;
+}
+.lights::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius:5px;
+    background: #04AA6D;
+    cursor: pointer;
+}
+.lights::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: #04AA6D;
+    cursor: pointer;
+}
+.joysticks{
+    margin-top: 20px;
+    margin-left: 100px;
+    display: flex;
+    flex-wrap: wrap;
+
+}
+.joystick{
+    border-radius: 100%;
+    border: #cdcdcd 2px solid;
+    width: 60px;
+    height: 60px;
+    margin: auto;
+    margin-left: 25px;
+}
+.stickPos{
+    border-radius: 100%;
+    border: lightgreen 2px solid;
+    background-color: lightgreen;
+    width: 6px;
+    height: 6px;
+}
+.lightBumper{
+    margin-right: 15px;
+    color: rgb(255, 255, 30);
+    font-family: "Lato", sans-serif;
+    font-weight: 250;
+    font-style: normal;
+}
+.container {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.rpcompass{
+    border-radius: 5px;
+    border: #cdcdcd 2px solid;
+    width: 100px;
+    height: 140px;
+    margin: auto;
+    padding: 0px;
+}
+.yawcompass{
+    border-radius: 100%;
+    border: #cdcdcd 2px solid;
+    width: 100px;
+    height: 100px;
+    margin: auto;
+}
+.rpy{
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-align: center;
+}
+p{
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+.rollpitchLine{
+    height: 0px;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top:6px;
+    border: 1px solid lightgreen;
+    rotate: 0deg;
+    translate: 0px -70px;
+}
+.rollpitchtick1{
+    height: 0px;
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+    border: 1px solid rgba(255,255,255,0.1);
+    translate: 0px 2px;
+}
+.rollpitchtick2{
+    height: 0px;
+    width: 75%;
+    margin-left: 12.5%;
+    margin-right: 12.5%;
+    border: 1px solid rgba(255,255,255,0.2);
+    translate: 0px 22px;
+}
+.rollpitchtick3{
+    height: 0px;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    border: 1px solid rgba(255,255,255,0.3);
+    translate: 0px 44px;
+}
+.rollpitchtick4{
+    height: 0px;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    border: 1px solid rgba(255,255,255,0.5);
+    translate: 0px 65px;
+}
+.rollpitchtick5{
+    height: 0px;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    border: 1px solid rgba(255,255,255,0.3);
+    translate: 0px 82px;
+}
+.rollpitchtick6{
+    height: 0px;
+    width: 75%;
+    margin-left: 12.5%;
+    margin-right: 12.5%;
+    border: 1px solid rgba(255,255,255,0.2);
+    translate: 0px 102px;
+}
+.rollpitchtick7{
+    height: 0px;
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+    border: 1px solid rgba(255,255,255,0.1);
+    translate: 0px 122px;
+}
+.yawLine{
+    height: 0px;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    border: 1px solid lightgreen;
+    border-image: linear-gradient(to right, lightgreen 50%, rgba(0,0,0,0) 40%) 100% 1;
+    margin-top:50%;
+    rotate: 90deg;
+    transition: ease-in-out 0.1s;
+}
+button{
+    border: 2px solid lightgreen;
+    border-radius: 10px;
+    height: 60px;
+    margin: auto;
+    margin-left: 15px;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+button:hover{
+    background-color: rgba(75, 201, 84, 0.365);
+    cursor: pointer;
+}
+button:active{
+    background-color: rgba(75, 201, 83, 0.45);
+    cursor: pointer;
+}
+.connect{
+    width: 0px;
+    height: 0px;
+    border: 7px solid white;
+    border-radius: 100%;
+    margin-left: 7px;
+    margin-top: -70px;
+}
+html{
+    overflow-x: hidden;
+}
+.mapDot{
+    background-color: grey;
+    width: 0.5%;
+    height: 0.5%;
+    border-width: 0px;
+    left: 50%;
+    top: 50%;
+    position: absolute;
+}
+.presentDot{
+    background-color: lightgreen;
+}
+.startDot{
+    background-color: orange;
+}
+::-webkit-scrollbar {
+    display: none;
+}
+.depth{
+    position: absolute;
+    bottom: 20px;
+    left: 23px;
+    font-family: "Lato", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+.lockZ{
+    position: absolute;
+    padding: 10px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-top: 100px;
+    margin-left: 40px;
+    border-color: lightblue;
+}
+.lockZ:hover{
+    background-color: rgba(75, 75, 200, 0.365);
+}
+.lockZ:active{
+    background-color: rgba(75, 75, 200, 0.65);
+}
+.GraphButtons{
+    position: absolute;
+    left: 40.5%;
+    top: 10%;
+}
+.gb{
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+.stopgb:hover{
+    background-color: rgba(200, 75, 75, 0.365);
+}
+.stopgb:active{
+    background-color: rgba(200, 75, 75, 0.65);
+}
+.resetgb:hover{
+    background-color: rgba(192, 110, 27, 0.365);
+}
+.resetgb:active{
+    background-color: rgba(192, 110, 27, 0.65);
+}
+
+.lato-thin {
+    font-family: "Lato", sans-serif;
+    font-weight: 100;
+    font-style: normal;
+}
+.lato-light {
+    font-family: "Lato", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+.lato-regular {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+.lato-bold {
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+.lato-black {
+    font-family: "Lato", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+}
+.lato-thin-italic {
+    font-family: "Lato", sans-serif;
+    font-weight: 100;
+    font-style: italic;
+}
+.lato-light-italic {
+    font-family: "Lato", sans-serif;
+    font-weight: 300;
+    font-style: italic;
+}
+.lato-regular-italic {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+}
+.lato-bold-italic {
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    font-style: italic;
+}
+.lato-black-italic {
+    font-family: "Lato", sans-serif;
+    font-weight: 900;
+    font-style: italic;
+}  
