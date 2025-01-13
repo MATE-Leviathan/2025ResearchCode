@@ -27,9 +27,9 @@ async def receive_controls(websocket):
             robot_controls.update(commands)
             
             # Clear the line and print updated controls
-            # sys.stdout.write("\033[2K\r")  # Clear the line
-            # sys.stdout.write(f"\rCurrent Controls: {robot_controls}")  # Overwrite with new text
-            # sys.stdout.flush()
+            sys.stdout.write("\033[2K\r")  # Clear the line
+            sys.stdout.write(f"\rCurrent Controls: {robot_controls}")  # Overwrite with new text
+            sys.stdout.flush()
 
             # Control ROV using recieved controls
             control_rov(robot_controls)
@@ -80,8 +80,8 @@ async def server_handler(websocket): # can take a path argument, but we don't ne
     try:
         # Run tasks
         await asyncio.gather(
-            send_data(websocket), 
-            send_video(websocket),
+            #send_data(websocket), 
+            #send_video(websocket),
             receive_controls(websocket),
             )
     except Exception as e:
