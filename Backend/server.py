@@ -36,8 +36,8 @@ async def receive_controls(websocket):
             
             await asyncio.sleep(0.1) # Update every 100ms  
             
-    except websockets.ConnectionClosed:
-        print("Client disconnected.")
+    except websockets.ConnectionClosed as e:
+        print(f"Connection closed: {e.code}, reason: {e.reason}")
 
 # Stream video frames
 async def send_video(websocket):
@@ -52,8 +52,8 @@ async def send_video(websocket):
             frame_data = base64.b64encode(buffer).decode('utf-8')  # Convert to Base64
             try:
                 await websocket.send(json.dumps({"frame": frame_data}))
-            except websockets.ConnectionClosed:
-                print("WebSocket closed during video streaming.")
+            except websockets.ConnectionClosed as e:
+                print(f"Connection closed: {e.code}, reason: {e.reason}")
                 break
             await asyncio.sleep(0.016)  # ~60 fps
     finally:
@@ -68,8 +68,8 @@ async def send_data(websocket):
             
             try:
                 await websocket.send(json.dumps(data))
-            except websockets.ConnectionClosed:
-                print("WebSocket closed during data streaming.")
+            except websockets.ConnectionClosed as e:
+                print(f"Connection closed: {e.code}, reason: {e.reason}")
                 break
             await asyncio.sleep(0.1)  # Update every 100ms
     except Exception as e:
@@ -89,7 +89,7 @@ async def server_handler(websocket): # can take a path argument, but we don't ne
 
 async def main():
     # Start WebSocket Server
-    async with websockets.serve(server_handler, "0.0.0.0", 8765):
+    async with websockets.serve(server_handler, "0.0.0.0", 8765, ping_interval=20, ping_timeout=20):
         print("Websockets Server Started")
         await asyncio.Future() # run forever
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import './App.css'
 //import Chart from 'react-apexcharts';
 
@@ -7,7 +7,7 @@ function App() {
   //const ip = "ws://10.42.0.1:8765/"; //ip of jetson ethernet
   //const ip = "ws://localhost:8765"; //local computer ip
 
-  const [webSocket, setWebSocket] = useState(null);
+  const webSocketRef = useRef(null);
   const [sensorData, setSensorData] = useState({});
   const [frame, setFrame] = useState(null);
   const [rovStatus, setRovStatus] = useState({});
@@ -18,28 +18,48 @@ function App() {
   const [jetStatusColor, setJetStatusColor] = useState("red");
   const [conStatusColor, setConStatusColor] = useState("red");
 
-  useEffect(() => { // establishes WebSocket Connection + receives data from Jetson
-    const socket = new WebSocket(ip);
-    socket.onopen = () => {console.log("WebSocket Connected"); setJetStatus("Jetson Connected"); setJetStatusColor("green")}
-    socket.onerror = (error) => {console.error("WebSocket Error:", error); setJetStatus("Jetson Error"); setJetStatusColor("red")}
-    socket.onclose = () => {console.log("WebSocket Disconnected"); setJetStatus("Jetson Disconnected"); setJetStatusColor("red")}
-    socket.onmessage = (message) => {
-      const data = JSON.parse(message.data);
-      if ('sensor' in data){
-        setSensorData(data.sensor);
-      }
-      if ('frame' in data){
-        setFrame(`data:image/jpeg;base64,${data.frame}`);
-      }
-      if ('status' in data){
-        setRovStatus(data.status);
-      }
+  useEffect(() => {
+    let retryTimeout;
+  
+    const connectWebSocket = () => {
+      const socket = new WebSocket(ip);
+      webSocketRef.current = socket;
+  
+      socket.onopen = () => {
+        console.log("WebSocket Connected");
+        setJetStatus("Jetson Connected");
+        setJetStatusColor("green");
+        clearTimeout(retryTimeout);
+      };
+      socket.onerror = (error) => {
+        console.error("WebSocket Error:", error);
+        setJetStatus("Jetson Error");
+        setJetStatusColor("red");
+      };
+      socket.onclose = () => {
+        console.log("WebSocket Disconnected");
+        setJetStatus("Jetson Disconnected");
+        setJetStatusColor("red");
+        retryTimeout = setTimeout(connectWebSocket, 3000); // Retry after 3 seconds
+      };
+      socket.onmessage = (message) => {
+        const data = JSON.parse(message.data);
+        if ('sensor' in data) setSensorData(data.sensor);
+        if ('frame' in data) setFrame(`data:image/jpeg;base64,${data.frame}`);
+        if ('status' in data) setRovStatus(data.status);
+      };
     };
-    setWebSocket(socket);
-    return () => socket.close();
-  }, []);
+  
+    connectWebSocket();
+  
+    return () => {
+      clearTimeout(retryTimeout);
+      webSocketRef.current?.close();
+    };
+  }, [ip]);
 
   useEffect(() => { // sends input
+    let lastSendTime = 0;
     const handleGamepadInput = () => {
       const gamepads = navigator.getGamepads();
       const gamepad = gamepads[0]; // Assuming the first connected gamepad
@@ -51,9 +71,11 @@ function App() {
           buttons: gamepad.buttons.map((button) => button.pressed), // Button states
         };
         setGamepadState(state);
+        const now = Date.now();
         // Send gamepad data via WebSocket
-        if (webSocket && webSocket.readyState === WebSocket.OPEN) {
+        if (webSocket && webSocket.readyState === WebSocket.OPEN && now - lastSendTime > 80) {
           webSocket.send(JSON.stringify(state));
+          lastSendTime = now;
         }
       } else {
         setConStatus("Controller Disconnected");
@@ -62,7 +84,7 @@ function App() {
       requestAnimationFrame(handleGamepadInput);
     };
     handleGamepadInput(); // Start the gamepad polling loop
-  }, [webSocket]);
+  }, []);
 
   useEffect(()=>{ //rollpitchline and yawline
     if(document.getElementById("yawLine")){
