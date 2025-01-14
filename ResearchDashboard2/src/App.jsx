@@ -18,7 +18,7 @@ function App() {
   const [jetStatusColor, setJetStatusColor] = useState("red");
   const [conStatusColor, setConStatusColor] = useState("red");
 
-  useEffect(() => {
+  useEffect(() => { // establish connection with jetson + receive data
     let retryTimeout;
   
     const connectWebSocket = () => {
@@ -44,6 +44,7 @@ function App() {
       };
       socket.onmessage = (message) => {
         const data = JSON.parse(message.data);
+        console.log(data);
         if ('sensor' in data) setSensorData(data.sensor);
         if ('frame' in data) setFrame(`data:image/jpeg;base64,${data.frame}`);
         if ('status' in data) setRovStatus(data.status);
@@ -73,8 +74,8 @@ function App() {
         setGamepadState(state);
         const now = Date.now();
         // Send gamepad data via WebSocket
-        if (webSocket && webSocket.readyState === WebSocket.OPEN && now - lastSendTime > 80) {
-          webSocket.send(JSON.stringify(state));
+        if (webSocketRef.current && webSocketRef.current?.readyState === WebSocket.OPEN && now - lastSendTime > 100) {
+          webSocketRef.current?.send(JSON.stringify(state));
           lastSendTime = now;
         }
       } else {

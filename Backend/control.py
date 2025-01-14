@@ -27,7 +27,7 @@ baroSensor = ms5837.MS5837_30BA()
 # Setting median pulse widths, angles, and max throttle for heave
 mpulse = 1370
 mangle = 90 #middle angle
-max = 0.5
+heaveStrength = 0.5
 
 # Initialize thrusters
 fr1 = servo.Servo(pca.channels[0], min_pulse = mpulse, max_pulse = 1900)
@@ -86,9 +86,9 @@ def control_rov(robot_controls):
     # heave
     if robot_controls.get("buttons", {})[heaveUp] ^ robot_controls.get("buttons", {})[heaveDown]:
         if robot_controls.get("buttons")[heaveUp]:
-            heave(max)
+            heave(heaveStrength)
         else:
-            heave(-max)
+            heave(-heaveStrength)
             
     # toggle zLock
     if robot_controls.get("buttons", {})[zLockButton] and not prev_Controls.get("buttons", {})[zLockButton]:

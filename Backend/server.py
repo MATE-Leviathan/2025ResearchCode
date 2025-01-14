@@ -12,7 +12,6 @@ import websockets
 import json
 import cv2
 import base64
-import sys
 from control import control_rov, get_status
 from sensors import get_sensor_data
 
@@ -26,13 +25,11 @@ async def receive_controls(websocket):
             commands = json.loads(data)
             robot_controls.update(commands)
             
-            # Clear the line and print updated controls
-            sys.stdout.write("\033[2K\r")  # Clear the line
-            sys.stdout.write(f"\rCurrent Controls: {robot_controls}")  # Overwrite with new text
-            sys.stdout.flush()
+            # Print controls
+            print(f"Current Controls: {robot_controls}")
 
             # Control ROV using recieved controls
-            #control_rov(robot_controls)
+            control_rov(robot_controls)
             
             await asyncio.sleep(0.1) # Update every 100ms  
             
