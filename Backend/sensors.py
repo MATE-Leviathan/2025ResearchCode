@@ -17,19 +17,19 @@ pca = adafruit_pca9685.PCA9685(i2c_bus, address=0x41)
 pca.frequency = 450
 pca.channels[0].duty_cycles = 0xffff
 imu = adafruit_bno055.BNO055_I2C(busio.I2C(board.SCL, board.SDA), address=0x28)
-celsiusSensor = tsys01.TSYS01()
+#celsiusSensor = tsys01.TSYS01()
 baroSensor = ms5837.MS5837_30BA()
 
 # Initialize temp and pressure sensors
-celsiusSensor.init()
-celsiusSensor.read()
+#celsiusSensor.init()
+#celsiusSensor.read()
 baroSensor.init()
 baroSensor.read()
 
 # Returns all sensor data
 def get_sensor_data():
     imutemp = imu.temperature
-    exttemp = (celsiusSensor.temperature()+baroSensor.temperature(ms5837.UNITS_Centigrade))/2
+    exttemp = 0 #(celsiusSensor.temperature()+baroSensor.temperature(ms5837.UNITS_Centigrade))/2
     yaw = imu.euler[0]
     pitch = imu.euler[1]
     roll = imu.euler[2]
