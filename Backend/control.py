@@ -76,10 +76,12 @@ def control_rov(robot_controls):
     #Y2 = round(robot_controls.get("axes", [0])[3] * 10) / 10
     
     # strafing
-    strafe(X1, -Y1) #not sure why y1 is negative
+    if ((X1 != round(prev_Controls.get("axes", [0])[0] * 10) / 10) or  (X1 != round(prev_Controls.get("axes", [0])[1] * 10) / 10)):
+        strafe(X1, -Y1) #not sure why y1 is negative
     
     # turning
-    turn(X2)
+    if (X2 != round(prev_Controls.get("axes", [0])[2] * 10) / 10):
+        turn(X2)
         
     # heave
     if robot_controls.get("buttons", {})[heaveUp] ^ robot_controls.get("buttons", {})[heaveDown]:
@@ -97,6 +99,7 @@ def control_rov(robot_controls):
             
     # toggle lights using controller
     if robot_controls.get("buttons", {})[lightsButton] and not prev_Controls.get("buttons", {})[lightsButton]:
+        print("lights pressed")
         lights = not lights
     if robot_controls.get("light", 0) > 0 or lights:
         if lights:
