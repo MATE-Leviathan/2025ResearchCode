@@ -26,7 +26,7 @@ async def receive_controls(websocket):
             robot_controls.update(commands)
             
             # Print controls
-            print(f"Current Controls: {robot_controls}")
+            # print(f"Current Controls: {robot_controls}")
 
             # Control ROV using recieved controls
             control_rov(robot_controls)

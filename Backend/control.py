@@ -76,15 +76,14 @@ def control_rov(robot_controls):
     #Y2 = round(robot_controls.get("axes", [0])[3] * 10) / 10
     
     # strafing
-    if X1 > 0 or Y1 > 0: 
-        strafe(X1, -Y1) #not sure why y1 is negative
+    strafe(X1, -Y1) #not sure why y1 is negative
     
     # turning
-    if X2 > 0:
-        turn(X2)
+    turn(X2)
         
     # heave
     if robot_controls.get("buttons", {})[heaveUp] ^ robot_controls.get("buttons", {})[heaveDown]:
+        print("heave button pressed")
         if robot_controls.get("buttons")[heaveUp]:
             heave(heaveStrength)
         else:
