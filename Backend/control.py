@@ -69,6 +69,8 @@ lightsButton = 5
 def control_rov(robot_controls):
     global prev_Controls, lights, zLock, slowmode
     
+    print(robot_controls)
+    
     # turn controller input into percentage of max throttle
     X1 = round(robot_controls.get("axes", [0])[0] * 10) / 10
     Y1 = round(robot_controls.get("axes", [0])[1] * 10) / 10
@@ -90,6 +92,8 @@ def control_rov(robot_controls):
             heave(heaveStrength)
         else:
             heave(-heaveStrength)
+    else:
+        heave(0)
             
     # toggle zLock
     if robot_controls.get("buttons", {})[zLockButton] and not prev_Controls.get("buttons", {})[zLockButton]:
@@ -107,6 +111,8 @@ def control_rov(robot_controls):
         else:
             level = int(robot_controls.get("light", 0))
         control_lights(level)
+    else:
+        control_lights(0)
         
     # store current controls for next cycle
     prev_Controls = robot_controls
@@ -121,7 +127,6 @@ def strafe(x, y):
     if float(x) < 0 and float(y) < 0:
         theta += 180
     mag = math.dist([0,0], [float(x),float(y)])
-    print(180-(mag*90*math.sin((theta-45)*math.pi/180)+90))
     fr1.angle = 180-(mag*90*math.sin((theta-45)*math.pi/180)+90)
     br3.angle = 180-(mag*90*math.sin((theta-135)*math.pi/180)+90)
     bl4.angle = 180-(mag*90*math.sin((theta-225)*math.pi/180)+90)
