@@ -34,7 +34,7 @@ async def receive_controls(websocket):
             await asyncio.sleep(0.1) # Update every 100ms  
             
     except websockets.ConnectionClosed as e:
-        print(f"Connection closed: {e.code}, reason: {e.reason}")
+        (f"Connection closed: {e.code}, reason: {e.reason}")
 
 # Stream video frames
 async def send_video(websocket):
@@ -78,8 +78,8 @@ async def server_handler(websocket): # can take a path argument, but we don't ne
         # Run tasks
         await asyncio.gather(
             #send_data(websocket), 
-            #send_video(websocket),
-            receive_controls(websocket),
+            send_video(websocket),
+            #receive_controls(websocket),
             )
     except Exception as e:
         print(f"Server handler error: {e}")
