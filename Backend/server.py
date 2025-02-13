@@ -46,9 +46,10 @@ async def send_video(websocket):
                 print("no camera :(")
                 break
             _, buffer = cv2.imencode('.jpg', frame)  # Encode the frame as JPEG
-            frame_data = base64.b64encode(buffer).decode('utf-8')  # Convert to Base64
+            frame_bytes = buffer.tobytes()  # Raw binary data
+            
             try:
-                await websocket.send(json.dumps({"frame": frame_data}))
+                await websocket.send(frame_bytes) # send frame as binary
             except websockets.ConnectionClosed as e:
                 print(f"Connection closed: {e.code}, reason: {e.reason}")
                 break

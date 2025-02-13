@@ -48,4 +48,4 @@ def get_sensor_data():
 
 # Returns pressure data
 def get_bar():
-    return round(baroSensor.pressure(ms5837.UNITS_psi)*100)/100
+    return 0 #round(baroSensor.pressure(ms5837.UNITS_psi)*100)/100

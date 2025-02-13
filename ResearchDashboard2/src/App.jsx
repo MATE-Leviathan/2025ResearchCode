@@ -23,6 +23,7 @@ function App() {
   
     const connectWebSocket = () => {
       const socket = new WebSocket(ip);
+      socket.binaryType = "blob"; // Expect binary data for frames
       webSocketRef.current = socket;
   
       socket.onopen = () => {
@@ -43,11 +44,31 @@ function App() {
         retryTimeout = setTimeout(connectWebSocket, 3000); // Retry after 3 seconds
       };
       socket.onmessage = (message) => {
-        const data = JSON.parse(message.data);
-        console.log(data);
-        if ('sensor' in data) setSensorData(data.sensor);
-        if ('frame' in data) setFrame(`data:image/jpeg;base64,${data.frame}`);
-        if ('status' in data) setRovStatus(data.status);
+        if (typeof message.data === "string") {
+          // JSON sensor data
+          try{
+            const data = JSON.parse(message.data);
+            console.log(data);
+            if ('sensor' in data) setSensorData(data.sensor);
+            //if ('frame' in data) setFrame(`data:image/jpeg;base64,${data.frame}`);
+            if ('status' in data) setRovStatus(data.status);
+          } catch (error) {
+            console.error("Error parsing JSON:", error);
+          }
+        }
+        else {
+          // Binary image frame
+          const blob = message.data;
+          const newUrl = URL.createObjectURL(blob);
+
+          // Revoke the previous URL to prevent memory leaks
+          if (window.lastFrameUrl) {
+              URL.revokeObjectURL(window.lastFrameUrl);
+          }
+          window.lastFrameUrl = newUrl;
+          
+          setFrame(newUrl);
+        }
       };
     };
   
